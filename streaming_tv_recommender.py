@@ -1,6 +1,6 @@
 #Setting up the TV show class
 class Series():
-    def __init__(self, name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis, review=""):
+    def __init__(self, name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis):
         self.name = name
         self.streaming_service = streaming_service
         self.genres = genres
@@ -11,12 +11,11 @@ class Series():
         self.imdb_rating = imdb_rating
         self.metacritic_rating = metacritic_rating
         self.imdb_synopsis = imdb_synopsis
-        self.review = review
 
 tv_shows = []
 #Function for turning a list of values into a Series instance and adding it to the tv_shows list
-def add_show(name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis, review=""):
-    new_show = Series(name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis, review)
+def add_show(name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis):
+    new_show = Series(name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis)
 
     tv_shows.append(new_show)
 
@@ -46,7 +45,7 @@ add_show("Star Trek: Discovery", "Paramount+", ["Adventure", "Science Fiction"],
 add_show("Seal Team", "Paramount+", ["Drama", "War"], ["Dramatic", "Violent", "Gritty"], "Serialized", "14", 93, 7.7, 57, "The lives of the elite Navy SEALs as they train, plan and execute the most dangerous, high-stakes missions the United States of America can ask.")
 add_show("The Amazing Race", "Paramount+", ["Reality", "Adventure"], ["Competitive"], "Seasonal", "PG", 343, 7.6, 72, "Multiple teams race around the globe for $1,000,000 to 'amazing' locations.")
 add_show("Fairly Oddparents", "Paramount+", ["Comedy"], ["Wacky", "Animated", "For Kids"], "Episodic", "Y7", 172, 7.2, 60, "After being tortured and humiliated by his babysitter, a ten year old boy is put under the care of two fairy godparents, who can grant him almost any wish, which leads to dire consequences.")
-add_show("The Good Wife", "Paramount+", ["Drama"], ["Dramatic", "Political"], "Serialized", "14", )
+add_show("The Good Wife", "Paramount+", ["Drama"], ["Dramatic", "Political"], "Serialized", "14", 156, 8.3, 81, "Alicia Florrick (Julianna Margulies) has been a good wife to her husband, a former state's attorney. After a very humiliating sex and corruption scandal, he is behind bars. She must now provide for her family and returns to work as a litigator in a law firm.")
 add_show("Criminal Minds", "Paramount+", ["Crime", "Drama"], ["Dramatic", "Mysterious"], "Episodic", "14", 324, 8.1, 42, "The cases of the F.B.I. Behavioral Analysis Unit (B.A.U.), an elite group of profilers who analyze the nation's most dangerous serial killers and individual heinous crimes in an effort to anticipate their next moves before they strike again.")
 add_show("NCIS", "Paramount+", ["Crime", "Drama"], ["Dramatic", "Mysterious"], "Episodic", "14", 425, 7.7, 51, "The cases of the Naval Criminal Investigative Service's Washington, D.C. Major Case Response Team, led by Special Agent Leroy Jethro Gibbs.")
 add_show("Blue Bloods", "Paramount+", ["Drama", "Crime"], ["Dramatic", "Mysterious"], "Mixed", "14", 245, 7.6, 70, "Revolves around a family of New York cops.")
@@ -71,7 +70,7 @@ add_show("What If?", "Disney+", ["Superhero"], ["Mind-Bending", "Violent", "Anim
 add_show("The Book of Boba Fett", "Disney+", ["Action", "Crime", "Science Fiction"], ["Gritty", "Nostalgic", "Epic"], "Serialized", "14", 6, 7.8, 59, "Bounty hunter Boba Fett & mercenary Fennec Shand navigate the underworld when they return to Tatooine to claim Jabba the Hutt's old turf.")
 add_show("The Mandalorian", "Disney+", ["Adventure", "Action", "Western", "Science Fiction"], ["Epic", "Nostalgic", "Gritty", "Heartfelt"], "Mixed", "14", 16, 8.8, 71, "The travels of a lone bounty hunter in the outer reaches of the galaxy, far from the authority of the New Republic.")
 add_show("The Simpsons", "Disney+", ["Comedy"], ["Witty", "Irreverent", "Satirical", "Animated"], "Episodic", "14", 717, 8.6, 87, "The satiric adventures of a working-class family in the misfit city of Springfield.")
-add_show("The Suite Life of Zack & Cody", "Disney+", ["Comedy"], ["Wacky", "For Kids"], "Episodic", "G", 87, 6.6, 5.4, "Comedy about identical twins living at the Tipton Hotel with their single mother who is a lounge singer at the hotel.")
+add_show("The Suite Life of Zack & Cody", "Disney+", ["Comedy"], ["Wacky", "For Kids"], "Episodic", "G", 87, 6.6, 54, "Comedy about identical twins living at the Tipton Hotel with their single mother who is a lounge singer at the hotel.")
 add_show("Kim Possible", "Disney+", ["Comedy", "Action", "Crime"], ["Witty", "Coming-of-Age", "Animated", "For Kids"], "Mixed", "G", 87, 7.2, 63, "A high school cheerleader and her accident-prone best friend balance their duties as global crime-fighters with the typical challenges of adolescence.")
 add_show("High School Musical: The Musical: The Series", "Disney+", ["Musical"], ["Dramatic", "Meta", "Witty", "Coming-of-Age"], "Serialized", "PG", 22, 7.1, 64, "The students from the school where the High School Musical films were shot stage a musical production based on the franchise.")
 add_show("Loki", "Disney+", ["Superhero", "Adventure"], ["Witty", "Mind-Bending", "Complex", "Mysterious"], "Serialized", "14", 6, 8.3, 74, "The mercurial villain Loki resumes his role as the God of Mischief in a new series that takes place after the events of “Avengers: Endgame.”")
@@ -92,7 +91,7 @@ add_show("Mare of Easttown", "HBO Max", ["Drama", "Crime"], ["Gritty", "Mysterio
 add_show("Succession", "HBO Max", ["Drama"], ["Witty", "Dramatic", "Provocative"], "Serialized", "MA", 20, 8.8, 83, "The Roy family is known for controlling the biggest media and entertainment company in the world. However, their world changes when their father steps down from the company.")
 add_show("Euphoria", "HBO Max", ["Drama"], ["Provocative", "Dramatic", "Coming-of-Age"], "Serialized", "MA", 19, 8.4, 70, "A look at life for a group of high school students as they grapple with issues of drugs, sex, and violence.")
 add_show("Westworld", "HBO Max", ["Drama", "Science Fiction"], ["Violent", "Dystopian", "Complex", "Mind-Bending", "Gritty"], "Serialized", "MA", 28, 8.6, 72, "Set at the intersection of the near future and the reimagined past, explore a world in which every human appetite can be indulged without consequence.")
-add_show("The Sopranos", "HBO Max", ["Crime", "Drama"], ["Dark", "Witty", "Irreverent", "Girtty"], "Serialized", "MA", 86, 9.2, 94, "New Jersey mob boss Tony Soprano deals with personal and professional issues in his home and business life that affect his mental state, leading him to seek professional psychiatric counseling.")
+add_show("The Sopranos", "HBO Max", ["Crime", "Drama"], ["Dark", "Witty", "Irreverent", "Gritty"], "Serialized", "MA", 86, 9.2, 94, "New Jersey mob boss Tony Soprano deals with personal and professional issues in his home and business life that affect his mental state, leading him to seek professional psychiatric counseling.")
 add_show("Game of Thrones", "HBO Max", ["Drama", "Fantasy"], ["Epic", "Violent", "Dark", "Gritty", "Provocative", "Complex", "Political"], "Serialized", "MA", 73, 9.2, 86, "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia.")
 add_show("The Big Bang Theory", "HBO Max", ["Comedy"], ["Wacky", "Easy-to-Watch"], "Mixed", "14", 279, 8.1, 61, "A woman who moves into an apartment across the hall from two brilliant but socially awkward physicists shows them how little they know about life outside of the laboratory.")
 add_show("Friends", "HBO Max", ["Comedy"], ["Witty", "Heartfelt", "Easy-to-Watch"], "Mixed", "14", 236, 8.8, 64, "Follows the personal and professional lives of six twenty to thirty-something-year-old friends living in Manhattan.")
@@ -139,6 +138,7 @@ add_show("The Great British Baking Show", "Netflix", ["Reality"], ["Competitive"
 add_show("Midnight Mass", "Netflix", ["Drama", "Horror"], ["Dark", "Psychological", "Provocative", "Mysterious", "Complex"], "Serialized", "MA", 7, 7.7, 75, "An isolated island community experiences miraculous events - and frightening omens - after the arrival of a charismatic, mysterious young priest.")
 add_show("Schitt's Creek", "Netflix", ["Comedy"], ["Witty", "Irreverent", "Satirical", "Heartfelt", "Easy-to-Watch"], "Mixed", "MA", 80, 8.5, 73, "When rich video-store magnate Johnny Rose and his family suddenly find themselves broke, they are forced to leave their pampered lives to regroup in Schitt's Creek.")
 add_show("Ozark", "Netflix", ["Crime", "Drama", "Thriller"], ["Dark", "Gritty", "Violent"], "Serialized", "MA", 37, 8.4, 69, "A financial advisor drags his family from Chicago to the Missouri Ozarks, where he must launder money to appease a drug boss.")
-add_show("Dark", "Netflix", ["Horror", "Crime"], ["Mind-Bending", "Dark", "Pyschological", "Mysterious"], "Serialized", "MA", 26, 8.8, 72, "A family saga with a supernatural twist, set in a German town, where the disappearance of two young children exposes the relationships among four families.")
+add_show("Dark", "Netflix", ["Horror", "Crime"], ["Mind-Bending", "Dark", "Psychological", "Mysterious"], "Serialized", "MA", 26, 8.8, 72, "A family saga with a supernatural twist, set in a German town, where the disappearance of two young children exposes the relationships among four families.")
 add_show("Narcos", "Netflix", ["Crime", "Drama", "Thriller", "Historical"], ["Dark", "Gritty", "Violent"], "Serialized", "MA", 30, 8.8, 77, "A chronicled look at the criminal exploits of Colombian drug lord Pablo Escobar, as well as the many other drug kingpins who plagued the country through the years.")
 add_show("The Queen's Gambit", "Netflix", ["Drama", "Historical"], ["Witty", "Dramatic", "Emotional"], "Serialized", "MA", 7, 8.6, 79, "Orphaned at the tender age of nine, prodigious introvert Beth Harmon discovers and masters the game of chess in 1960s USA. But child stardom comes at a price.")
+
