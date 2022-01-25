@@ -142,3 +142,25 @@ add_show("Dark", "Netflix", ["Horror", "Crime"], ["Mind-Bending", "Dark", "Psych
 add_show("Narcos", "Netflix", ["Crime", "Drama", "Thriller", "Historical"], ["Dark", "Gritty", "Violent"], "Serialized", "MA", 30, 8.8, 77, "A chronicled look at the criminal exploits of Colombian drug lord Pablo Escobar, as well as the many other drug kingpins who plagued the country through the years.")
 add_show("The Queen's Gambit", "Netflix", ["Drama", "Historical"], ["Witty", "Dramatic", "Emotional"], "Serialized", "MA", 7, 8.6, 79, "Orphaned at the tender age of nine, prodigious introvert Beth Harmon discovers and masters the game of chess in 1960s USA. But child stardom comes at a price.")
 
+
+def run_recommender(show_list):
+    print("Hello, and welcome to the streaming tv recommender tool!")
+    print("To start out, let's narrow down our choices to match the streaming services you have available.")
+    available_streaming_services = []
+    for service in streaming_services:
+        while True:
+            available = input(f"Do you have {service}? y/n\n")
+            if str(available).lower() == "y":
+                print(f"Great! We've added {service} shows to the available show list.")
+                available_streaming_services.append(service)
+                break
+            elif str(available).lower() == "n":
+                print("That's too bad. Moving on...")
+                break
+            else:
+                print("Response not recognized. Please respond to prompts with 'y' or 'n'.")
+
+    print(available_streaming_services)
+    return
+
+run_recommender(tv_shows)
