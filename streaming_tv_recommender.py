@@ -12,6 +12,32 @@ class Series():
         self.metacritic_rating = metacritic_rating
         self.imdb_synopsis = imdb_synopsis
 
+    #Output representation of Series
+    def __repr__(self):
+        #1st line: series name
+        str_repr = f"{self.name}\n\n"
+        #2nd line: streaming service
+        str_repr += f"Streaming on {self.streaming_service}\n\nGenre(s): "
+        #3rd line: loops through series genres and appends each to repr, comma-separated
+        for genre in self.genres:
+            str_repr += genre + ", "
+        #Removes comma from end of last genre and sets more line breaks
+        str_repr = str_repr[:-2] + "\n\n"
+        #4th line: loops through series traits and appends each to repr, comma_separated
+        str_repr += "Traits: "
+        for trait in self.traits:
+            str_repr += trait + ", "
+        #Removes comma from end of last genre and sets more line breaks
+        str_repr = str_repr[:-2] + "\n\n"
+        #5th line: story style, content rating, number of episodes
+        str_repr += f"Story Style: {self.story_style} | Content Rating: TV {self.content_rating} | Number of Episodes: {self.number_of_episodes}\n\n"
+        #6th line: IMDB rating and Metacritic rating
+        str_repr += f"IMDB User Score (Out of 10): {self.imdb_rating} | Metacritic Critic Score (Out of 100): {self.metacritic_rating}\n\n"
+        #7th and final line: Imdb synopsis
+        str_repr += f"{self.imdb_synopsis}\n\n-----------------------------------\n"
+
+        return str_repr
+
 tv_shows = []
 #Function for turning a list of values into a Series instance and adding it to the tv_shows list
 def add_show(name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis):
@@ -160,7 +186,9 @@ def run_recommender(show_list):
             else:
                 print("Response not recognized. Please respond to prompts with 'y' or 'n'.")
 
-    print(available_streaming_services)
-    return
+    for show in show_list:
+        if show.streaming_service in available_streaming_services:
+            print(show)
+    
 
 run_recommender(tv_shows)
