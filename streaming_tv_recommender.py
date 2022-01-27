@@ -38,12 +38,16 @@ class Series():
 
         return str_repr
 
-tv_shows = []
-#Function for turning a list of values into a Series instance and adding it to the tv_shows list
+#Dictionary for catalogs from each different streaming services
+tv_shows = {}
+
+#Function for turning a list of values into a Series instance and adding it to the tv_shows dictionary under its streaming service
 def add_show(name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis):
     new_show = Series(name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis)
 
-    tv_shows.append(new_show)
+    tv_shows[new_show.streaming_service].append(new_show)
+
+
 
 #Setting up lists for streaming service, genres, and attributes
 streaming_services = ["Netflix", "Hulu", "Disney+", "Peacock", "HBO Max", "Paramount+", "Amazon Prime", "Apple TV+"]
@@ -51,6 +55,10 @@ genres = ["Drama", "Comedy", "Action", "Reality", "Game Show", "Horror", "Advent
 traits = ["Satirical", "Meta", "Dark", "Witty", "Dry", "Wacky", "Irreverent", "Dramatic", "Mind-Bending", "Cynical", "Heartfelt", "Violent", "Gritty", "Steamy", "Complex", "Easy-to-Watch", "Uncomfortable", "Provocative", "Epic", "Competitive", "Feel-Good", "Nostalgic", "Emotional", "Psychological", "Mysterious", "Political", "Dystopian", "Non-English", "Animated", "Coming-of-Age", "For Kids"]
 story_styles = ["Serialized", "Seasonal", "Mixed", "Episodic"]
 content_ratings = ["Y", "Y7", "G", "PG", "14", "MA"]
+
+#Setting up dictionary for tv shows, sorted by streaming service
+for service in streaming_services:
+    tv_shows[service] = []
 
 #Amazon Prime Shows
 add_show("Psych", "Amazon Prime", ["Crime", "Comedy"], ["Witty", "Easy-to-Watch"], "Episodic", "14", 120, 8.3, 60, "A novice sleuth is hired by the Police after he cons them into thinking he has psychic powers which help solve crimes. With the assistance of his reluctant best friend, the duo take on a series of complicated cases.")
@@ -169,9 +177,10 @@ add_show("Narcos", "Netflix", ["Crime", "Drama", "Thriller", "Historical"], ["Da
 add_show("The Queen's Gambit", "Netflix", ["Drama", "Historical"], ["Witty", "Dramatic", "Emotional"], "Serialized", "MA", 7, 8.6, 79, "Orphaned at the tender age of nine, prodigious introvert Beth Harmon discovers and masters the game of chess in 1960s USA. But child stardom comes at a price.")
 
 
-def run_recommender(show_list):
+def run_recommender(show_dict):
     print("Hello, and welcome to the streaming tv recommender tool!")
     print("To start out, let's narrow down our choices to match the streaming services you have available.")
+    shows_to_print = []
     available_streaming_services = []
     for service in streaming_services:
         while True:
@@ -186,9 +195,11 @@ def run_recommender(show_list):
             else:
                 print("Response not recognized. Please respond to prompts with 'y' or 'n'.")
 
-    for show in show_list:
-        if show.streaming_service in available_streaming_services:
-            print(show)
+    for service in available_streaming_services:
+        if service in available_streaming_services:
+            shows_to_print += show_dict[service]
     
+    for show in shows_to_print:
+        print(show)
 
 run_recommender(tv_shows)
