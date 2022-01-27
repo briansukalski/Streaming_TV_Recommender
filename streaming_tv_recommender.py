@@ -176,11 +176,8 @@ add_show("Dark", "Netflix", ["Horror", "Crime"], ["Mind-Bending", "Dark", "Psych
 add_show("Narcos", "Netflix", ["Crime", "Drama", "Thriller", "Historical"], ["Dark", "Gritty", "Violent"], "Serialized", "MA", 30, 8.8, 77, "A chronicled look at the criminal exploits of Colombian drug lord Pablo Escobar, as well as the many other drug kingpins who plagued the country through the years.")
 add_show("The Queen's Gambit", "Netflix", ["Drama", "Historical"], ["Witty", "Dramatic", "Emotional"], "Serialized", "MA", 7, 8.6, 79, "Orphaned at the tender age of nine, prodigious introvert Beth Harmon discovers and masters the game of chess in 1960s USA. But child stardom comes at a price.")
 
-
-def run_recommender(show_dict):
-    print("Hello, and welcome to the streaming tv recommender tool!")
-    print("To start out, let's narrow down our choices to match the streaming services you have available.")
-    shows_to_print = []
+#Helper asks user about their streaming service availability and adds each service the user has to a list, then returns that list
+def get_available_streaming_services():
     available_streaming_services = []
     for service in streaming_services:
         while True:
@@ -194,12 +191,25 @@ def run_recommender(show_dict):
                 break
             else:
                 print("Response not recognized. Please respond to prompts with 'y' or 'n'.")
+    
+    return available_streaming_services
+    
 
+def run_recommender(show_dict):
+    print("Hello, and welcome to the streaming tv recommender tool!")
+    print("To start out, let's narrow down our choices to match the streaming services you have available.")
+    shows_available = []
+    available_streaming_services = get_available_streaming_services()
+
+    #Adds shows from available streaming services to list of possible show recommendations
     for service in available_streaming_services:
         if service in available_streaming_services:
-            shows_to_print += show_dict[service]
+            shows_available += show_dict[service]
     
-    for show in shows_to_print:
-        print(show)
+    #Collects user's genre preference, utiziling autofill to make suggestions based on 
 
+
+    for show in shows_available:
+        print(show)
+        
 run_recommender(tv_shows)
