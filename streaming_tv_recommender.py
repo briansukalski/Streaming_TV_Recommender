@@ -54,7 +54,7 @@ streaming_services = ["Netflix", "Hulu", "Disney+", "Peacock", "HBO Max", "Param
 genres = ["Drama", "Comedy", "Action", "Reality", "Game Show", "Horror", "Adventure", "Crime", "Fantasy", "Musical", "Romance", "Science Fiction", "Thriller", "War", "Western", "Historical", "Biographical", "Documentary", "Superhero"]
 traits = ["Satirical", "Meta", "Dark", "Witty", "Dry", "Wacky", "Irreverent", "Dramatic", "Mind-Bending", "Cynical", "Heartfelt", "Violent", "Gritty", "Steamy", "Complex", "Easy-to-Watch", "Uncomfortable", "Provocative", "Epic", "Competitive", "Feel-Good", "Nostalgic", "Emotional", "Psychological", "Mysterious", "Political", "Dystopian", "Non-English", "Animated", "Coming-of-Age", "For Kids"]
 story_styles = ["Serialized", "Seasonal", "Mixed", "Episodic"]
-content_ratings = ["Y", "Y7", "G", "PG", "14", "MA"]
+content_ratings = ["Y", "G", "Y7", "PG", "14", "MA"]
 
 #Setting up dictionary for tv shows, sorted by streaming service
 for service in streaming_services:
@@ -176,7 +176,7 @@ add_show("Dark", "Netflix", ["Horror", "Crime"], ["Mind-Bending", "Dark", "Psych
 add_show("Narcos", "Netflix", ["Crime", "Drama", "Thriller", "Historical"], ["Dark", "Gritty", "Violent"], "Serialized", "MA", 30, 8.8, 77, "A chronicled look at the criminal exploits of Colombian drug lord Pablo Escobar, as well as the many other drug kingpins who plagued the country through the years.")
 add_show("The Queen's Gambit", "Netflix", ["Drama", "Historical"], ["Witty", "Dramatic", "Emotional"], "Serialized", "MA", 7, 8.6, 79, "Orphaned at the tender age of nine, prodigious introvert Beth Harmon discovers and masters the game of chess in 1960s USA. But child stardom comes at a price.")
 
-#Helper asks user about their streaming service availability and adds each service the user has to a list, then returns that list
+#Helper function asks user about their streaming service availability and adds each service the user has to a list, then returns that list
 def get_available_streaming_services():
     available_streaming_services = []
     for service in streaming_services:
@@ -193,7 +193,31 @@ def get_available_streaming_services():
                 print("Response not recognized. Please respond to prompts with 'y' or 'n'.")
     
     return available_streaming_services
-    
+
+#Helper function asks user about their content rating limits and adds all content ratings at and below that limit to an allowed content rating list
+def get_content_limit():
+    allowed_content_ratings = []
+    while True:
+        max_content_rating = input("What is the maximum content rating you want included in your recommendations? To view a list of content ratings, enter 'list'.\n")
+        max_content_rating = str(max_content_rating).upper()
+        #If max content rating matches, adds all content ratings at or below that max to the allowed content ratings list
+        if max_content_rating in content_ratings:
+            for i in range(len(content_ratings)):
+                if content_ratings[i] == max_content_rating:
+                    allowed_content_ratings = content_ratings[:(i + 1)]
+                    print(f"Your maximum allowed content rating has been set to {max_content_rating}")
+                    return allowed_content_ratings
+        #Lists all content ratings if the user specifies
+        elif max_content_rating == "LIST":
+            msg = "Content Ratings: "
+            for content_rating in content_ratings:
+                msg += content_rating + " | "
+            #Trims off final 
+            msg = msg[:-3]
+            print(msg)
+        else:
+            print("Content rating inputted was not recognized. Please enter a valid TV content rating. For a list of all content ratings, enter 'list'.")
+
 
 def run_recommender(show_dict):
     print("Hello, and welcome to the streaming tv recommender tool!")
@@ -206,10 +230,13 @@ def run_recommender(show_dict):
         if service in available_streaming_services:
             shows_available += show_dict[service]
     
-    #Collects user's genre preference, utiziling autofill to make suggestions based on 
-
-
+    #Collects user limitation on content rating
+    print("Now, let's set your content rating limit.")
+    available_content_ratings = get_content_limit()
+    
     for show in shows_available:
         print(show)
-        
+    
+    print(available_content_ratings)
+    
 run_recommender(tv_shows)
