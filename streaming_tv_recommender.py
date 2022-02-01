@@ -194,6 +194,61 @@ def get_available_streaming_services():
     
     return available_streaming_services
 
+
+#Helper function collects and returns information from user about preferred show genres/traits
+def get_preferences(preference_lst, pref_cat):
+    print(f"Now, let's collect some information about your favorite show {pref_cat}s. You must select at least one {pref_cat} to continue\n")
+    help_str = f"Typing the beginning of a genre and pressing enter will generate a list of autocomplete suggestions\n\nTo add all {pref_cat}s to your preferences, type 'all'\n\nWhen you have specified all preferred {pref_cat}s, type 'done'\n\nType 'help' to bring up this guide again\n"
+    preferences = []
+    autocomp_preferences = []
+    while True:
+        preference = str(input(f"What {pref_cat} would you like to add to your preferences?\n\n")).lower()
+        #User can only exit the function once they have added at least one item to their preference list
+        if preference == "done":
+            if len(preferences) == 0:
+                print(f"You must specify at least one {pref_cat} before finalizing")
+            else:
+                print(f"Okay, we have your {pref_cat} preferences")
+                return preferences
+        #User can specify all items as preferences
+        elif preference == "all":
+            print(f"Okay, clearly you don't have a {pref_cat} preferences")
+            preferences = preference_lst[:]
+            return preferences
+        #Brings up help message
+        elif preference == "help":
+            print(help_str)
+        else:
+            autocomp_preferences = []
+            #Searches for matching substrings
+            exact_match = False
+            for item in preference_lst:
+                if len(item) >= len(preference):
+                    if item[0:len(preference)].lower() == preference:
+                        if len(item) == len(preference):
+                            exact_match = True
+                            if item not in preferences:
+                                #If input is exact match, adds preference to preferences list
+                                print(f"Adding {item} to your preferences... done")
+                                preferences.append(item)
+                                break
+                            else:
+                                print(f"{item} is already in your preferences list! Please pick a different {pref_cat}")
+                        #Adds autocomplete entry to list
+                        else:
+                            autocomp_preferences.append(item)
+            if len(autocomp_preferences) > 0:
+                print_str = "Autocomplete Suggestions: "
+                for pref in autocomp_preferences:
+                    print_str += f"{pref} | "
+                print_str = print_str[:-3] + "\n"
+                print(print_str)
+            elif exact_match == True:
+                pass
+            else:
+                print(f"No matching {pref_cat}s found. Please try again.")
+
+
 #Helper function asks user about their content rating limits and adds all content ratings at and below that limit to an allowed content rating list
 def get_content_limit():
     allowed_content_ratings = []
@@ -205,7 +260,7 @@ def get_content_limit():
             for i in range(len(content_ratings)):
                 if content_ratings[i] == max_content_rating:
                     allowed_content_ratings = content_ratings[:(i + 1)]
-                    print(f"Your maximum allowed content rating has been set to {max_content_rating}")
+                    print(f"Your maximum allowed content rating has been set to {max_content_rating}\n")
                     return allowed_content_ratings
         #Lists all content ratings if the user specifies
         elif max_content_rating == "LIST":
@@ -213,11 +268,10 @@ def get_content_limit():
             for content_rating in content_ratings:
                 msg += content_rating + " | "
             #Trims off final 
-            msg = msg[:-3]
+            msg = msg[:-3] + "\n"
             print(msg)
         else:
-            print("Content rating inputted was not recognized. Please enter a valid TV content rating. For a list of all content ratings, enter 'list'.")
-
+            print("Content rating inputted was not recognized. Please enter a valid TV content rating. For a list of all content ratings, enter 'list'.\n")
 
 def run_recommender(show_dict):
     print("Hello, and welcome to the streaming tv recommender tool!")
@@ -230,8 +284,16 @@ def run_recommender(show_dict):
         if service in available_streaming_services:
             shows_available += show_dict[service]
     
+    #Has user select as many genres as they'd like for their search
+    print("Now that we know what shows you can watch, let's narrow them down to which shows you want to watch.\n")
+    genre_preferences = get_preferences(genres, "genre")
+    
+    #Has user select as many traits as they'd like for their search
+    print("Next up, let's hear about what traits you like in a TV show.\n")
+    trait_preferences = get_preferences(traits, "trait")
+    
     #Collects user limitation on content rating
-    print("Now, let's set your content rating limit.")
+    print("Next up, we'll set your content rating filters.")
     available_content_ratings = get_content_limit()
     
     for show in shows_available:
