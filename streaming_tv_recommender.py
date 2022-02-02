@@ -11,6 +11,7 @@ class Series():
         self.imdb_rating = imdb_rating
         self.metacritic_rating = metacritic_rating
         self.imdb_synopsis = imdb_synopsis
+        self.score = 0
 
     #Output representation of Series
     def __repr__(self):
@@ -273,9 +274,23 @@ def get_content_limit():
         else:
             print("Content rating inputted was not recognized. Please enter a valid TV content rating. For a list of all content ratings, enter 'list'.\n")
 
+
+#Helper function that collects from user whether they value critical reviews or user ratings when selecting a tv show
+def user_or_critic():
+
+    while True:
+        preference = str(input("Do you value audience ratings ('audience') or critical reviews ('critics') more when deciding what shows to watch? Please enter your preference. If you don't have a preference, enter 'both'\n\n")).lower()
+
+        if preference == "audience" or preference == "critics" or preference == "both":
+            return preference
+            break
+        else:
+            print("\nInput not recognized. Please enter as a response either 'audience', 'critics', or 'both' to continue\n")
+
+
 def run_recommender(show_dict):
-    print("Hello, and welcome to the streaming tv recommender tool!")
-    print("To start out, let's narrow down our choices to match the streaming services you have available.")
+    print("Hello, and welcome to the streaming tv recommender tool!\n")
+    print("To start out, let's narrow down our choices to match the streaming services you have available.\n")
     shows_available = []
     available_streaming_services = get_available_streaming_services()
 
@@ -293,12 +308,12 @@ def run_recommender(show_dict):
     trait_preferences = get_preferences(traits, "trait")
     
     #Collects user limitation on content rating
-    print("Next up, we'll set your content rating filters.")
+    print("Next up, we'll set your content rating filters.\n")
     available_content_ratings = get_content_limit()
     
-    for show in shows_available:
-        print(show)
-    
-    print(available_content_ratings)
+    #Collects user preference between user reviews and metacritic score
+    print("Finally, we'll find out whether you value user ratings or critical reviews more when selecting a show.\n")
+    print(user_or_critic())
+
     
 run_recommender(tv_shows)
