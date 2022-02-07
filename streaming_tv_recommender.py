@@ -55,7 +55,7 @@ streaming_services = ["Netflix", "Hulu", "Disney+", "Peacock", "HBO Max", "Param
 genres = ["Drama", "Comedy", "Action", "Reality", "Game Show", "Horror", "Adventure", "Crime", "Fantasy", "Musical", "Romance", "Science Fiction", "Thriller", "War", "Western", "Historical", "Biographical", "Documentary", "Superhero"]
 traits = ["Satirical", "Meta", "Dark", "Witty", "Dry", "Wacky", "Irreverent", "Dramatic", "Mind-Bending", "Cynical", "Heartfelt", "Violent", "Gritty", "Steamy", "Complex", "Easy-to-Watch", "Uncomfortable", "Provocative", "Epic", "Competitive", "Feel-Good", "Nostalgic", "Emotional", "Psychological", "Mysterious", "Political", "Dystopian", "Non-English", "Animated", "Coming-of-Age", "For Kids"]
 story_styles = ["Serialized", "Seasonal", "Mixed", "Episodic"]
-content_ratings = ["Y", "G", "Y7", "PG", "14", "MA"]
+content_ratings = {"Y": 1, "G": 2, "Y7": 3, "PG": 4, "14": 5, "MA": 6}
 
 #Setting up dictionary for tv shows, sorted by streaming service
 for service in streaming_services:
@@ -257,22 +257,22 @@ def get_content_limit():
         max_content_rating = input("What is the maximum content rating you want included in your recommendations? To view a list of content ratings, enter 'list'.\n")
         max_content_rating = str(max_content_rating).upper()
         #If max content rating matches, adds all content ratings at or below that max to the allowed content ratings list
-        if max_content_rating in content_ratings:
-            for i in range(len(content_ratings)):
-                if content_ratings[i] == max_content_rating:
-                    allowed_content_ratings = content_ratings[:(i + 1)]
-                    print(f"Your maximum allowed content rating has been set to {max_content_rating}\n")
-                    return allowed_content_ratings
+        if max_content_rating in content_ratings.keys():
+            for rating in content_ratings.keys():
+                if rating == max_content_rating:
+                    max_allowed_rating = content_ratings[rating]
+                    print(f"Your maximum allowed content rating has been set to TV-{max_content_rating}\n")
+                    return max_allowed_rating
         #Lists all content ratings if the user specifies
         elif max_content_rating == "LIST":
             msg = "Content Ratings: "
-            for content_rating in content_ratings:
+            for content_rating in content_ratings.keys():
                 msg += content_rating + " | "
             #Trims off final 
             msg = msg[:-3] + "\n"
             print(msg)
         else:
-            print("Content rating inputted was not recognized. Please enter a valid TV content rating. For a list of all content ratings, enter 'list'.\n")
+            print("Content rating input was not recognized. Please enter a valid TV content rating. For a list of all content ratings, enter 'list'.\n")
 
 
 #Helper function that collects from user whether they value critical reviews or user ratings when selecting a tv show
@@ -309,11 +309,36 @@ def run_recommender(show_dict):
     
     #Collects user limitation on content rating
     print("Next up, we'll set your content rating filters.\n")
-    available_content_ratings = get_content_limit()
-    
+    max_content_rating = get_content_limit()
+    print(max_content_rating)
+
     #Collects user preference between user reviews and metacritic score
     print("Finally, we'll find out whether you value user ratings or critical reviews more when selecting a show.\n")
     print(user_or_critic())
 
-    
-run_recommender(tv_shows)
+    #Loops through available tv shows and only keeps shows that match with user-specified preferences
+    shows_to_recommend = []
+    for show in shows_available:
+        genre_match = False
+        trait_match = False
+        #Checks genres, skips to next show if genres don't match
+        for genre in show.genres:
+            if genre in genre_preferences:
+                genre_match = True
+                break
+        if genre_match == False:
+            continue
+        #Checks traits, skips to next show if traits don't match
+        for trait in show.traits:
+            if trait in trait_preferences:
+                trait_match = True
+                break
+        if trait_match == False:
+            continue
+        #Checks content rating, adds show to recommendation list if content rating falls in-bounds: if the show passes this test, it should be added to the recommendation list
+        if content_ratings[show.content_rating] <= max_content_rating:
+            shows_to_recommend.append(show)
+        
+    return shows_to_recommend
+
+print(run_recommender(tv_shows))
