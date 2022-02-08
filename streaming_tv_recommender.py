@@ -1,3 +1,5 @@
+import maxheap
+
 #Setting up the TV show class
 class Series():
     def __init__(self, name, streaming_service, genres, traits, story_style, content_rating, number_of_episodes, imdb_rating, metacritic_rating, imdb_synopsis):
@@ -283,7 +285,6 @@ def user_or_critic():
 
         if preference == "audience" or preference == "critics" or preference == "both":
             return preference
-            break
         else:
             print("\nInput not recognized. Please enter as a response either 'audience', 'critics', or 'both' to continue\n")
 
@@ -310,14 +311,14 @@ def run_recommender(show_dict):
     #Collects user limitation on content rating
     print("Next up, we'll set your content rating filters.\n")
     max_content_rating = get_content_limit()
-    print(max_content_rating)
 
     #Collects user preference between user reviews and metacritic score
     print("Finally, we'll find out whether you value user ratings or critical reviews more when selecting a show.\n")
-    print(user_or_critic())
+    review_preference = user_or_critic()
 
     #Loops through available tv shows and only keeps shows that match with user-specified preferences
-    shows_to_recommend = []
+    #Stores shows to recommend in max heap
+    shows_to_recommend = maxheap.MaxHeap()
     for show in shows_available:
         genre_match = False
         trait_match = False
@@ -335,10 +336,31 @@ def run_recommender(show_dict):
                 break
         if trait_match == False:
             continue
-        #Checks content rating, adds show to recommendation list if content rating falls in-bounds: if the show passes this test, it should be added to the recommendation list
+            #Checks content rating, adds show to recommendation heap if content rating falls in-bounds: if the show passes this test, it should be added to the recommendation list
         if content_ratings[show.content_rating] <= max_content_rating:
-            shows_to_recommend.append(show)
-        
-    return shows_to_recommend
+            #Assigns show a score dependent on whether the user indicated that they preferred critical reviews, audience scores, or both
+            if review_preference == "critics":
+                show.score = show.metacritic_rating
+            elif review_preference == "audience":
+                show.score = show.imdb_rating
+            elif review_preference == "both":
+                show.score = (show.metacritic_rating + show.imdb_rating*10)/2
 
-print(run_recommender(tv_shows))
+            shows_to_recommend.add(show, show.score)
+
+    #Takes top ten scoring shows from heap, or until heap is empty    
+    top_ten_list = []
+    for i in range(1, 11):
+        if len(shows_to_recommend.items) <= 1:
+            break
+        top_ten_list.append(shows_to_recommend.pop()[0])
+    #If top ten list is empty, then no shows were found matching user criteria
+    if len(top_ten_list) == 0:
+        print("\nSorry, we didn't find any shows matching your search criteria. Please feel free to try again\n")
+    else:
+        for show in top_ten_list:
+            print(show)
+
+
+
+run_recommender(tv_shows)

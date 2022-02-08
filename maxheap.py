@@ -5,8 +5,6 @@ class MaxHeap():
         self.items.append((data, value))
         self.heapify_up()
 
-        print(self.items)
-
     def pop(self):
         last_idx = len(self.items) - 1
         #Swaps root index with last index, then removes last index
@@ -14,7 +12,6 @@ class MaxHeap():
         max_value = self.items.pop(last_idx)
         self.heapify_down()
 
-        print(self.items)
         return max_value
 
     def get_parent_idx(self, idx):
