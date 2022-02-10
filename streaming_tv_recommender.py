@@ -15,29 +15,32 @@ class Series():
         self.metacritic_rating = metacritic_rating
         self.imdb_synopsis = imdb_synopsis
         self.score = 0
+        self.rank = 0
 
     #Output representation of Series
     def __repr__(self):
-        #1st line: series name
-        str_repr = f"\n{self.name}\n\n"
-        #2nd line: streaming service
+        #1st line: rank in recommendation list
+        str_repr = f"\n{self.rank}.\n\n"
+        #2nd line: series name
+        str_repr += f"{self.name}\n\n"
+        #3rd line: streaming service
         str_repr += f"Streaming on {self.streaming_service}\n\nGenre(s): "
-        #3rd line: loops through series genres and appends each to repr, comma-separated
+        #4th line: loops through series genres and appends each to repr, comma-separated
         for genre in self.genres:
             str_repr += genre + ", "
         #Removes comma from end of last genre and sets more line breaks
         str_repr = str_repr[:-2] + "\n\n"
-        #4th line: loops through series traits and appends each to repr, comma_separated
+        #5th line: loops through series traits and appends each to repr, comma_separated
         str_repr += "Traits: "
         for trait in self.traits:
             str_repr += trait + ", "
         #Removes comma from end of last genre and sets more line breaks
         str_repr = str_repr[:-2] + "\n\n"
-        #5th line: story style, content rating, number of episodes
+        #6th line: story style, content rating, number of episodes
         str_repr += f"Story Style: {self.story_style} | Content Rating: TV {self.content_rating} | Number of Episodes: {self.number_of_episodes}\n\n"
-        #6th line: IMDB rating and Metacritic rating
+        #7th line: IMDB rating and Metacritic rating
         str_repr += f"IMDB User Score (Out of 10): {self.imdb_rating} | Metacritic Critic Score (Out of 100): {self.metacritic_rating}\n\n"
-        #7th and final line: Imdb synopsis
+        #8th and final line: Imdb synopsis
         str_repr += f"{self.imdb_synopsis}\n\n_________________________\n"
 
         return str_repr
@@ -131,7 +134,7 @@ add_show("Euphoria", "HBO Max", ["Drama"], ["Provocative", "Dramatic", "Coming-o
 add_show("Westworld", "HBO Max", ["Drama", "Science Fiction"], ["Violent", "Dystopian", "Complex", "Mind-Bending", "Gritty"], "Serialized", "MA", 28, 8.6, 72, "Set at the intersection of the near future and the reimagined past, explore a world in which every human appetite can be indulged without consequence.")
 add_show("The Sopranos", "HBO Max", ["Crime", "Drama"], ["Dark", "Witty", "Irreverent", "Gritty"], "Serialized", "MA", 86, 9.2, 94, "New Jersey mob boss Tony Soprano deals with personal and professional issues in his home and business life that affect his mental state, leading him to seek professional psychiatric counseling.")
 add_show("Game of Thrones", "HBO Max", ["Drama", "Fantasy"], ["Epic", "Violent", "Dark", "Gritty", "Provocative", "Complex", "Political"], "Serialized", "MA", 73, 9.2, 86, "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia.")
-add_show("The Big Bang Theory", "HBO Max", ["Comedy"], ["Wacky", "Easy-to-Watch"], "Mixed", "14", 279, 8.1, 61, "A woman who moves into an apartment across the hall from two brilliant but socially awkward physicists shows them how little they know about life outside of the laboratory.")
+add_show("Silicon Valley", "HBO Max", ["Comedy"], ["Witty", "Satirical", "Irreverent"], "Serialized", "MA", 53, 8.5, 84, "Follows the struggle of Richard Hendricks, a Silicon Valley engineer trying to build his own company called Pied Piper.")
 add_show("Friends", "HBO Max", ["Comedy"], ["Witty", "Heartfelt", "Easy-to-Watch"], "Mixed", "14", 236, 8.8, 64, "Follows the personal and professional lives of six twenty to thirty-something-year-old friends living in Manhattan.")
 add_show("Curb Your Enthusiasm", "HBO Max", ["Comedy"], ["Witty", "Irreverent", "Wacky", "Uncomfortable"], "Episodic", "MA", 100, 8.7, 84, "The life and times of Larry David and the predicaments he gets himself into with his friends and complete strangers.")
 add_show("South Park", "HBO Max", ["Comedy"], ["Witty", "Irreverent", "Wacky", "Uncomfortable", "Animated"], "Mixed", "MA", 309, 8.7, 64, "Follows the misadventures of four irreverent grade-schoolers in the quiet, dysfunctional town of South Park, Colorado.")
@@ -243,7 +246,7 @@ def get_preferences(preference_lst, pref_cat):
                         else:
                             autocomp_preferences.append(item)
             if len(autocomp_preferences) > 0:
-                print_str = "Autocomplete Suggestions: "
+                print_str = "\nAutocomplete Suggestions: "
                 for pref in autocomp_preferences:
                     print_str += f"{pref} | "
                 print_str = print_str[:-3] + "\n"
@@ -282,7 +285,7 @@ def get_content_limit():
 def user_or_critic():
 
     while True:
-        preference = str(scrollprint.scroll_input("Do you value audience ratings ('audience') or critical reviews ('critics') more when deciding what shows to watch? Please enter your preference. If you don't have a preference, enter 'both'\n\n")).lower()
+        preference = str(scrollprint.scroll_input("\nDo you value audience ratings ('audience') or critical reviews ('critics') more when deciding what shows to watch? Please enter your preference. If you don't have a preference, enter 'both'\n\n")).lower()
 
         if preference == "audience" or preference == "critics" or preference == "both":
             return preference
@@ -310,7 +313,7 @@ def run_recommender(show_dict):
     trait_preferences = get_preferences(traits, "trait")
     
     #Collects user limitation on content rating
-    scrollprint.scroll_print("Next up, we'll set your content rating filters.\n")
+    scrollprint.scroll_print("\nNext up, we'll set your content rating filters.\n")
     max_content_rating = get_content_limit()
 
     #Collects user preference between user reviews and metacritic score
@@ -355,11 +358,12 @@ def run_recommender(show_dict):
         if len(shows_to_recommend.items) <= 1:
             break
         top_ten_list.append(shows_to_recommend.pop()[0])
+        top_ten_list[i - 1].rank = i
     #If top ten list is empty, then no shows were found matching user criteria
     if len(top_ten_list) == 0:
         scrollprint.scroll_print("\nSorry, we didn't find any shows matching your search criteria. Please feel free to try again\n")
     else:
-        scrollprint.scroll_print("\n Generating your recommendations... see below!\n")
+        scrollprint.scroll_print("\n Generating your recommendations... see below!\n_________________________\n")
         for show in top_ten_list:
             scrollprint.scroll_print(str(show))
 
