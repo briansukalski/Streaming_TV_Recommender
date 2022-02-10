@@ -1,4 +1,5 @@
 import maxheap
+import scrollprint
 
 #Setting up the TV show class
 class Series():
@@ -184,44 +185,44 @@ def get_available_streaming_services():
     available_streaming_services = []
     for service in streaming_services:
         while True:
-            available = input(f"\nDo you have {service}? y/n\n")
+            available = scrollprint.scroll_input(f"\nDo you have {service}? y/n\n")
             if str(available).lower() == "y":
-                print(f"\nGreat! We've added {service} shows to the available show list.\n")
+                scrollprint.scroll_print(f"\nGreat! We've added {service} shows to the available show list.\n")
                 available_streaming_services.append(service)
                 break
             elif str(available).lower() == "n":
-                print("\nThat's too bad. Moving on...\n")
+                scrollprint.scroll_print("\nThat's too bad. Moving on...\n")
                 break
             else:
-                print("\nResponse not recognized. Please respond to prompts with 'y' or 'n'.\n")
+                scrollprint.scroll_print("\nResponse not recognized. Please respond to prompts with 'y' or 'n'.\n")
     
     return available_streaming_services
 
 
 #Helper function collects and returns information from user about preferred show genres/traits
 def get_preferences(preference_lst, pref_cat):
-    print(f"\nNow, let's collect some information about your favorite show {pref_cat}s. You must select at least one {pref_cat} to continue\n")
+    scrollprint.scroll_print(f"\nNow, let's collect some information about your favorite show {pref_cat}s. You must select at least one {pref_cat} to continue\n")
     help_str = f"\nTyping the beginning of a genre and pressing enter will generate a list of autocomplete suggestions\n\nTo add all {pref_cat}s to your preferences, type 'all'\n\nWhen you have specified all preferred {pref_cat}s, type 'done'\n\nType 'help' to bring up this guide again\n\n"
     preferences = []
     autocomp_preferences = []
-    print(help_str)
+    scrollprint.scroll_print(help_str)
     while True:
-        preference = str(input(f"\nWhat {pref_cat} would you like to add to your preferences?\n")).lower()
+        preference = str(scrollprint.scroll_input(f"\nWhat {pref_cat} would you like to add to your preferences?\n")).lower()
         #User can only exit the function once they have added at least one item to their preference list
         if preference == "done":
             if len(preferences) == 0:
-                print(f"\nYou must specify at least one {pref_cat} before finalizing\n")
+                scrollprint.scroll_print(f"\nYou must specify at least one {pref_cat} before finalizing\n")
             else:
-                print(f"\nOkay, we have your {pref_cat} preferences\n")
+                scrollprint.scroll_print(f"\nOkay, we have your {pref_cat} preferences\n")
                 return preferences
         #User can specify all items as preferences
         elif preference == "all":
-            print(f"\nOkay, clearly you don't have a {pref_cat} preference\n")
+            scrollprint.scroll_print(f"\nOkay, clearly you don't have a {pref_cat} preference\n")
             preferences = preference_lst[:]
             return preferences
         #Brings up help message
         elif preference == "help":
-            print(help_str)
+            scrollprint.scroll_print(help_str)
         else:
             autocomp_preferences = []
             #Searches for matching substrings
@@ -232,12 +233,12 @@ def get_preferences(preference_lst, pref_cat):
                         if len(item) == len(preference):
                             exact_match = True
                             if item not in preferences:
-                                #If input is exact match, adds preference to preferences list
-                                print(f"\nAdding {item} to your preferences... done\n")
+                                #If scrollprint.scroll_input is exact match, adds preference to preferences list
+                                scrollprint.scroll_print(f"\nAdding {item} to your preferences... done\n")
                                 preferences.append(item)
                                 break
                             else:
-                                print(f"\n{item} is already in your preferences list! Please pick a different {pref_cat}\n")
+                                scrollprint.scroll_print(f"\n{item} is already in your preferences list! Please pick a different {pref_cat}\n")
                         #Adds autocomplete entry to list
                         else:
                             autocomp_preferences.append(item)
@@ -246,24 +247,24 @@ def get_preferences(preference_lst, pref_cat):
                 for pref in autocomp_preferences:
                     print_str += f"{pref} | "
                 print_str = print_str[:-3] + "\n"
-                print(print_str)
+                scrollprint.scroll_print(print_str)
             elif exact_match == True:
                 pass
             else:
-                print(f"\nNo matching {pref_cat}s found. Please try again.\n")
+                scrollprint.scroll_print(f"\nNo matching {pref_cat}s found. Please try again.\n")
 
 
 #Helper function asks user about their content rating limits and adds all content ratings at and below that limit to an allowed content rating list
 def get_content_limit():
     while True:
-        max_content_rating = input("\nWhat is the maximum content rating you want included in your recommendations? To view a list of content ratings, enter 'list'.\n")
+        max_content_rating = scrollprint.scroll_input("\nWhat is the maximum content rating you want included in your recommendations? To view a list of content ratings, enter 'list'.\n")
         max_content_rating = str(max_content_rating).upper()
         #If max content rating matches, adds all content ratings at or below that max to the allowed content ratings list
         if max_content_rating in content_ratings.keys():
             for rating in content_ratings.keys():
                 if rating == max_content_rating:
                     max_allowed_rating = content_ratings[rating]
-                    print(f"\nYour maximum allowed content rating has been set to TV-{max_content_rating}\n")
+                    scrollprint.scroll_print(f"\nYour maximum allowed content rating has been set to TV-{max_content_rating}\n")
                     return max_allowed_rating
         #Lists all content ratings if the user specifies
         elif max_content_rating == "LIST":
@@ -272,26 +273,26 @@ def get_content_limit():
                 msg += content_rating + " | "
             #Trims off final 
             msg = msg[:-3] + "\n"
-            print(msg)
+            scrollprint.scroll_print(msg)
         else:
-            print("\nContent rating input was not recognized. Please enter a valid TV content rating. For a list of all content ratings, enter 'list'.\n")
+            scrollprint.scroll_print("\nContent rating scrollprint.scroll_input was not recognized. Please enter a valid TV content rating. For a list of all content ratings, enter 'list'.\n")
 
 
 #Helper function that collects from user whether they value critical reviews or user ratings when selecting a tv show
 def user_or_critic():
 
     while True:
-        preference = str(input("Do you value audience ratings ('audience') or critical reviews ('critics') more when deciding what shows to watch? Please enter your preference. If you don't have a preference, enter 'both'\n\n")).lower()
+        preference = str(scrollprint.scroll_input("Do you value audience ratings ('audience') or critical reviews ('critics') more when deciding what shows to watch? Please enter your preference. If you don't have a preference, enter 'both'\n\n")).lower()
 
         if preference == "audience" or preference == "critics" or preference == "both":
             return preference
         else:
-            print("\nInput not recognized. Please enter as a response either 'audience', 'critics', or 'both' to continue\n")
+            scrollprint.scroll_print("\nInput not recognized. Please enter as a response either 'audience', 'critics', or 'both' to continue\n")
 
 
 def run_recommender(show_dict):
-    print("\nHello, and welcome to the streaming tv recommender tool!\n")
-    print("\nTo start out, let's narrow down our choices to match the streaming services you have available.\n")
+    scrollprint.scroll_print("\nHello, and welcome to the streaming tv recommender tool!\n")
+    scrollprint.scroll_print("\nTo start out, let's narrow down our choices to match the streaming services you have available.\n")
     shows_available = []
     available_streaming_services = get_available_streaming_services()
 
@@ -301,19 +302,19 @@ def run_recommender(show_dict):
             shows_available += show_dict[service]
     
     #Has user select as many genres as they'd like for their search
-    print("\nNow that we know what shows you can watch, let's narrow them down to which shows you want to watch.\n")
+    scrollprint.scroll_print("\nNow that we know what shows you can watch, let's narrow them down to which shows you want to watch.\n")
     genre_preferences = get_preferences(genres, "genre")
     
     #Has user select as many traits as they'd like for their search
-    print("\nNext up, let's hear about what traits you like in a TV show.\n")
+    scrollprint.scroll_print("\nNext up, let's hear about what traits you like in a TV show.\n")
     trait_preferences = get_preferences(traits, "trait")
     
     #Collects user limitation on content rating
-    print("Next up, we'll set your content rating filters.\n")
+    scrollprint.scroll_print("Next up, we'll set your content rating filters.\n")
     max_content_rating = get_content_limit()
 
     #Collects user preference between user reviews and metacritic score
-    print("\nFinally, we'll find out whether you value user ratings or critical reviews more when selecting a show.\n")
+    scrollprint.scroll_print("\nFinally, we'll find out whether you value user ratings or critical reviews more when selecting a show.\n")
     review_preference = user_or_critic()
 
     #Loops through available tv shows and only keeps shows that match with user-specified preferences
@@ -356,11 +357,12 @@ def run_recommender(show_dict):
         top_ten_list.append(shows_to_recommend.pop()[0])
     #If top ten list is empty, then no shows were found matching user criteria
     if len(top_ten_list) == 0:
-        print("\nSorry, we didn't find any shows matching your search criteria. Please feel free to try again\n")
+        scrollprint.scroll_print("\nSorry, we didn't find any shows matching your search criteria. Please feel free to try again\n")
     else:
+        scrollprint.scroll_print("\n Generating your recommendations... see below!\n")
         for show in top_ten_list:
-            print(show)
+            scrollprint.scroll_print(str(show))
 
-
+test_show = Series("Breaking Bad", "Netflix", ["Drama", "Crime", "Thriller", "Western"], ["Dark", "Violent", "Gritty", "Complex"], "Serialized", "MA", 62, 9.4, 87, "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine in order to secure his family's future.")
 
 run_recommender(tv_shows)

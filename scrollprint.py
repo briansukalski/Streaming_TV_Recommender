@@ -1,4 +1,3 @@
-import random
 import time
 import sys
 
@@ -6,7 +5,7 @@ import sys
 def scroll_print(msg):
     for i in msg:
         if i == "\n":
-            time.sleep(1)
+            time.sleep(0.25)
         elif i == "_":
             time.sleep(0.2)
         else:
